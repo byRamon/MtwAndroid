@@ -85,7 +85,7 @@ class MainActivity : AppCompatActivity(), CompletadoListener {
     }
     fun populateUI(pedido: Pedidos)
     {
-        tvTexto.text = pedido.id.toString() + " "  + pedido.objeto + " " + pedido.unidades
+        //tvTexto.text = pedido.id.toString() + " "  + pedido.objeto + " " + pedido.unidades
     }
     fun jsonObjectRequest() {
         Log.i(LOG_TAG, "jsonObjectRequest")

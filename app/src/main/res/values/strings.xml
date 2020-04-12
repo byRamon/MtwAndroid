@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">plazApp</string>
+    <string name="ev_nombre">Nombre</string>
+    <string name="ev_telefono">Telefono</string>
+    <string name="ev_direccion">Dirección</string>
+    <string name="btn_entrar">Entrar</string>
 </resources>
