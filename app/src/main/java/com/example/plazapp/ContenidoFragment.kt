@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 
 class ContenidoFragment : Fragment() {
@@ -35,8 +36,15 @@ class ContenidoFragment : Fragment() {
 
     fun cargarDatos(){
         Log.i(MainActivity.LOG_TAG, "cargar datos")
+        var icono = vista!!.findViewById<ImageView>(R.id.iv_logotienda)
         var titulo = vista!!.findViewById<TextView>(R.id.tv_titulo_tienda)
+        var descripcion = vista!!.findViewById<TextView>(R.id.tv_descripcion)
+        var telefono = vista!!.findViewById<TextView>(R.id.tv_telefono)
+        var ubicacion = vista!!.findViewById<TextView>(R.id.tv_ubicacion)
+        icono.setImageResource(lsttiendas.lstTiendas?.get(obtenerIndex())?.imagen!!)
         titulo.text = lsttiendas.lstTiendas?.get(obtenerIndex())?.nombre
+        descripcion.text = lsttiendas.lstTiendas?.get(obtenerIndex())?.descripcion
+        telefono.text = lsttiendas.lstTiendas?.get(obtenerIndex())?.telefono
+        ubicacion.text = lsttiendas.lstTiendas?.get(obtenerIndex())?.ubicacion
     }
-
 }

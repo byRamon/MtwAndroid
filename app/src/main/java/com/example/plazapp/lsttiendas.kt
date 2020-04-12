@@ -47,9 +47,9 @@ class lsttiendas : Fragment() {
 
     private fun configurarListView(){
         lstTiendas = ArrayList()
-        lstTiendas?.add(Tienda("Las quince letrss", "Venta de abarrote", "4578784512", "Colonia Laureles, torreslanda #27"))
-        lstTiendas?.add(Tienda("Pollos hermanos", "Pollo estilo Sinaloa", "4578787988", "Colonia Laureles, torreslanda #46"))
-        lstTiendas?.add(Tienda("Carniceria Diaz", "Venta de carne fresca", "4577878469", "Colonia Laureles, torreslanda #120"))
+        lstTiendas?.add(Tienda("Las quince letrss", "Venta de abarrote", "4578784512", "Colonia Laureles, torreslanda #27", R.drawable.appicon))
+        lstTiendas?.add(Tienda("Pollos hermanos", "Pollo estilo Sinaloa", "4578787988", "Colonia Laureles, torreslanda #46", R.drawable.appicon))
+        lstTiendas?.add(Tienda("Carniceria Diaz", "Venta de carne fresca", "4577878469", "Colonia Laureles, torreslanda #120", R.drawable.appicon))
 
         lstNombres = obtenerNombres(lstTiendas!!)
         val adaptador = ArrayAdapter(activity!!, android.R.layout.simple_list_item_activated_1, lstNombres!!)
