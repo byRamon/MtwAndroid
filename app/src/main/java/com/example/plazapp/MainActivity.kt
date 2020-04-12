@@ -1,5 +1,6 @@
 package com.example.plazapp
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -20,11 +21,18 @@ import java.lang.Exception
 class MainActivity : AppCompatActivity(), CompletadoListener {
     companion object {
         val LOG_TAG = "@DEV"
+        var usuario:Usuario? = null
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
+        btn_acceso.setOnClickListener{
+            usuario = Usuario(
+            ev_nombre.text.toString(), ev_direccion.text.toString(), ev_telefono.text.toString())
+            val intent = Intent(this, Fragmento::class.java)
+            startActivity(intent)
+        }
+        /*
 
         doAsync{
             var pedido = Pedidos()
@@ -48,16 +56,7 @@ class MainActivity : AppCompatActivity(), CompletadoListener {
                     Toast.makeText(this, "No hay Red", Toast.LENGTH_LONG).show()
             } else
                 Toast.makeText(this, "No hay Red", Toast.LENGTH_LONG).show()
-        /*
-        var queue = Volley.newRequestQueue(this)
-        var url = "http://localhost:8080/ApiCoronavirus/post.php"
-        val request = JsonObjectRequest(url, null,
-            Response.Listener{ response ->
-                Log.i("@DEV", "Response is: $response")
-            }, Response.ErrorListener { error ->
-                error.printStackTrace()
-            })
-        queue.add(request)
+
          */
     }
     private fun solicitudHttpVolley(url:String){
