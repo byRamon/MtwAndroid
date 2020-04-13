@@ -1,0 +1,25 @@
+package com.example.plazapp
+
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.plazapp.data.*
+import kotlinx.android.synthetic.main.activity_items.*
+
+class ItemsActivity : AppCompatActivity() {
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_items)
+
+        recycler.layoutManager= LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false)
+        val models =ArrayList<Items>()
+        models.add(Items(0,"Chiles en nogada", "El chile en nogada es uno de los platillos típicos de la gastronomía del estado de Puebla", 0))
+        models.add(Items(1,"Ensalada", "Un plato frío de varias verduras cortadas, mezcladas y aderezadas, fundamentalmente con sal, aceite vegetal y vinagre", 0))
+        models.add(Items(2,"Pavo", "El pavo relleno es el principal protagonista de la cena de Acción de Gracias y, por ello, te enseñamos a cocinar la auténtica receta americana", 0))
+        models.add(Items(3,"Pozole","El pozole es un plato tradicional mesoamericano, un caldo hecho a base de granos de maíz de un tipo conocido comúnmente como cacahuazintle, a la que se agrega, según la región, carne de pollo o de cerdo como ingrediente secundario", 0))//R.drawable.pozole))
+        models.add(Items(4,"Tacos","Es considerado como uno de los platillos más representativos de la comida mexicana\u200B\u200B." , 0))
+        val adapter= Adapter(models)
+        recycler.adapter = adapter
+    }
+}
