@@ -1,5 +1,6 @@
 package com.example.plazapp
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -7,11 +8,14 @@ import com.example.plazapp.data.*
 import kotlinx.android.synthetic.main.activity_items.*
 
 class ItemsActivity : AppCompatActivity() {
+    companion object{
+        var lstitems:ArrayList<Items>? = null
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_items)
-
+        lstitems = ArrayList()
         recycler.layoutManager= LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false)
         val models =ArrayList<Items>()
         models.add(Items(0,"Chiles en nogada", "El chile en nogada es uno de los platillos típicos de la gastronomía del estado de Puebla", 0))
@@ -21,5 +25,10 @@ class ItemsActivity : AppCompatActivity() {
         models.add(Items(4,"Tacos","Es considerado como uno de los platillos más representativos de la comida mexicana\u200B\u200B." , 0))
         val adapter= Adapter(models)
         recycler.adapter = adapter
+
+        btn_Carrito.setOnClickListener {
+            var intent = Intent(this, CarritoActivity::class.java)
+            startActivity(intent)
+        }
     }
 }

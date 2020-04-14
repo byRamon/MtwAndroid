@@ -12,7 +12,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ItemsActivity"></activity>
+        <activity android:name=".CarritoActivity"></activity>
+        <activity android:name=".ItemsActivity" />
         <activity android:name=".Fragmento" />
         <activity android:name=".DetallesActivity" />
         <activity android:name=".TiendasActivity" />
