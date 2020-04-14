@@ -1,5 +1,6 @@
 package com.example.plazapp
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ArrayAdapter
@@ -19,6 +20,11 @@ class CarritoActivity : AppCompatActivity() {
         lstNombres = obtenerNombres(ItemsActivity.lstitems)
         val adaptador = ArrayAdapter(this, android.R.layout.simple_list_item_activated_1, lstNombres!!)
         lst_carrito.adapter = adaptador
+
+        btnPedido.setOnClickListener {
+            var intent = Intent(this, Fragmento::class.java)
+            startActivity(intent)
+        }
     }
 
     fun obtenerNombres(list:ArrayList<Items>?):ArrayList<String>{
