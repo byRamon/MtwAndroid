@@ -1,17 +1,20 @@
 package com.example.plazapp
 
 import android.content.Intent
+import android.graphics.Typeface
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.FrameLayout
 import android.widget.ListView
+import android.widget.TextView
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
-import com.example.plazapp.data.*
+import com.example.plazapp.data.Tienda
+import kotlinx.android.synthetic.*
 
 class lsttiendas : Fragment() {
     companion object{
@@ -37,12 +40,15 @@ class lsttiendas : Fragment() {
         }
     }
 
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val vista = inflater.inflate(R.layout.fragment_lsttiendas, container, false)
         return vista
+
+
     }
 
     private fun configurarListView(){
