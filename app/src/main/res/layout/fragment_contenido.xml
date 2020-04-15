@@ -30,25 +30,25 @@
                 android:id="@+id/tv_titulo_tienda"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="" />
+                android:text="Tienda" />
 
             <TextView
                 android:id="@+id/tv_descripcion"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="" />
+                android:text="descripcion" />
 
             <TextView
                 android:id="@+id/tv_telefono"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="" />
+                android:text="telefono" />
 
             <TextView
                 android:id="@+id/tv_ubicacion"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="" />
+                android:text="ubicacion" />
 
             <Button
                 android:id="@+id/btn_entrartienda"
@@ -61,7 +61,8 @@
                 android:elevation="5dp"
                 android:text="@string/btn_entrar"
                 android:textColor="#FFF"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:layout_margin="20dp"/>
         </LinearLayout>
 
     </LinearLayout>

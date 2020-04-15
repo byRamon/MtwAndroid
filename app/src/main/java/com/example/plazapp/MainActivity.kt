@@ -17,8 +17,10 @@ import kotlinx.android.synthetic.main.activity_main.*
 import org.json.JSONArray
 import org.json.JSONObject
 import java.lang.Exception
+import android.widget.TextView;
 
 class MainActivity : AppCompatActivity(), CompletadoListener {
+
     companion object {
         val LOG_TAG = "@DEV"
         var usuario:Usuario? = null
@@ -32,6 +34,9 @@ class MainActivity : AppCompatActivity(), CompletadoListener {
             val intent = Intent(this, Fragmento::class.java)
             startActivity(intent)
         }
+
+
+
         /*
 
         doAsync{
@@ -189,4 +194,6 @@ class MainActivity : AppCompatActivity(), CompletadoListener {
         // Add the request to the RequestQueue.
         queue.add(jsonArrayRequest)
     }
+
+
 }

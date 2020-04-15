@@ -25,7 +25,9 @@
             android:layout_height="wrap_content"
             android:padding="10dp"
             android:textSize="20sp"
-            android:layout_below="@id/thumbnail">
+            android:layout_below="@id/thumbnail"
+            android:fontFamily="@fuentes/bray_notes.ttf"
+            >
         </TextView>
         <TextView
             android:id="@+id/tvDescripcion"
@@ -35,6 +37,7 @@
             android:textSize="20sp"
             android:layout_below="@id/tvtexto">
         </TextView>
+
         <ImageView
             android:id="@+id/imagen"
             android:layout_width="wrap_content"
