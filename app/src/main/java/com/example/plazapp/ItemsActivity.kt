@@ -36,6 +36,7 @@ class ItemsActivity : AppCompatActivity() {
 
 //Juan Menu
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu1,menu)
         menuInflater.inflate(R.menu.menu,menu)
         return true
     }
@@ -43,9 +44,15 @@ class ItemsActivity : AppCompatActivity() {
         return when (item.itemId){
             R.id.mnuAcerca-> acercaDe()
             R.id.btnSalir-> Item2()
+            R.id.mnudatos->  datos()
             else -> super.onOptionsItemSelected(item)
         }
 
+    }
+    fun datos():Boolean{
+        val intent = Intent( this, MainActivity::class.java)
+        startActivity(intent)
+        return true
     }
     fun acercaDe():Boolean{
         val intent = Intent( this, MainActivity::class.java)

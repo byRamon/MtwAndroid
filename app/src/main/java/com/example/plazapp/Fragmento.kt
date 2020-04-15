@@ -19,7 +19,8 @@ class Fragmento : AppCompatActivity() {
 
 //Juan Menu
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.menu,menu)
+
+    menuInflater.inflate(R.menu.menu,menu)
         return true
     }
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -31,10 +32,17 @@ class Fragmento : AppCompatActivity() {
 
     }
     fun acercaDe():Boolean{
+        val intent = Intent( this, Fragmento::class.java)
+        startActivity(intent)
+        return true
+    }
+
+    fun datos():Boolean{
         val intent = Intent( this, MainActivity::class.java)
         startActivity(intent)
         return true
     }
+
     fun Item2():Boolean{
         val intent = Intent( this, MainActivity::class.java)
         startActivity(intent)
