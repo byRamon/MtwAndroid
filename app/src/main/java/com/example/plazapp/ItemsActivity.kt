@@ -3,6 +3,8 @@ package com.example.plazapp
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.plazapp.data.*
 import kotlinx.android.synthetic.main.activity_items.*
@@ -30,5 +32,29 @@ class ItemsActivity : AppCompatActivity() {
             var intent = Intent(this, CarritoActivity::class.java)
             startActivity(intent)
         }
+    }
+
+//Juan Menu
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu,menu)
+        return true
+    }
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId){
+            R.id.mnuAcerca-> acercaDe()
+            R.id.btnSalir-> Item2()
+            else -> super.onOptionsItemSelected(item)
+        }
+
+    }
+    fun acercaDe():Boolean{
+        val intent = Intent( this, MainActivity::class.java)
+        startActivity(intent)
+        return true
+    }
+    fun Item2():Boolean{
+        val intent = Intent( this, MainActivity::class.java)
+        startActivity(intent)
+        return true
     }
 }
