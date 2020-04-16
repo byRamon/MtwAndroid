@@ -1,17 +1,21 @@
 package com.example.plazapp
 
 import android.content.Intent
+import android.graphics.Typeface
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.FrameLayout
 import android.widget.ListView
+import android.widget.TextView
+import androidx.fragment.app.Fragment
 import android.widget.Toast
 import androidx.fragment.app.FragmentTransaction
+import com.example.plazapp.data.Tienda
+import kotlinx.android.synthetic.*
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonArrayRequest
 import com.android.volley.toolbox.Volley

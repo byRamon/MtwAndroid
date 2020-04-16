@@ -4,6 +4,8 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonArrayRequest
@@ -61,5 +63,36 @@ class ItemsActivity : AppCompatActivity() {
         queue.add(jsonArrayRequest)
         //  } else Toast.makeText(this.context, "No hay Red", Toast.LENGTH_LONG).show()
         //} else Toast.makeText(this.context, "No hay Red", Toast.LENGTH_LONG).show()
+    }
+
+//Juan Menu
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu1,menu)
+        menuInflater.inflate(R.menu.menu,menu)
+        return true
+    }
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId){
+            R.id.mnudetalle-> detalle()
+            R.id.mnuAcerca-> acercaDe()
+            R.id.btnSalir-> Item2()
+            else -> super.onOptionsItemSelected(item)
+        }
+
+    }
+    fun acercaDe():Boolean{
+        val intent = Intent( this, Fragmento::class.java)
+        startActivity(intent)
+        return true
+    }
+    fun Item2():Boolean{
+        val intent = Intent( this, MainActivity::class.java)
+        startActivity(intent)
+        return true
+    }
+    fun detalle():Boolean{
+        val intent = Intent( this, MainActivity::class.java)
+        startActivity(intent)
+        return true
     }
 }

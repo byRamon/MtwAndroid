@@ -38,7 +38,10 @@
                 android:paddingEnd="10dp"
                 android:paddingBottom="10dp"
                 android:textColor="#FFF"
-                android:textColorHint="#CCC" />
+                android:textColorHint="#CCC"
+                android:fontFamily="@fuentes/bray_notes.ttf"
+
+                />
             <EditText
                 android:id="@+id/ev_telefono"
                 android:layout_width="match_parent"

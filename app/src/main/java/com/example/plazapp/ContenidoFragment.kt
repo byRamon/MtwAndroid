@@ -66,4 +66,6 @@ class ContenidoFragment : Fragment() {
             startActivity(intent)
         }
     }
+
+
 }
