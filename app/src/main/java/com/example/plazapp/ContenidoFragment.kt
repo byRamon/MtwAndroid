@@ -56,6 +56,7 @@ class ContenidoFragment : Fragment() {
 
         btn.setOnClickListener{
             val intent = Intent(this.context, ItemsActivity::class.java)
+            intent.putExtra("idTienda", lsttiendas.lstTiendas?.get(obtenerIndex())?.id)
             startActivity(intent)
         }
     }

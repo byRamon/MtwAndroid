@@ -3,7 +3,11 @@ package com.example.plazapp
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.android.volley.Response
+import com.android.volley.toolbox.JsonArrayRequest
+import com.android.volley.toolbox.Volley
 import com.example.plazapp.data.*
 import kotlinx.android.synthetic.main.activity_items.*
 
@@ -17,18 +21,45 @@ class ItemsActivity : AppCompatActivity() {
         setContentView(R.layout.activity_items)
         lstitems = ArrayList()
         recycler.layoutManager= LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false)
-        val models =ArrayList<Items>()
-        models.add(Items(0,"Chiles en nogada", "El chile en nogada es uno de los platillos típicos de la gastronomía del estado de Puebla", 0))
-        models.add(Items(1,"Ensalada", "Un plato frío de varias verduras cortadas, mezcladas y aderezadas, fundamentalmente con sal, aceite vegetal y vinagre", 0))
-        models.add(Items(2,"Pavo", "El pavo relleno es el principal protagonista de la cena de Acción de Gracias y, por ello, te enseñamos a cocinar la auténtica receta americana", 0))
-        models.add(Items(3,"Pozole","El pozole es un plato tradicional mesoamericano, un caldo hecho a base de granos de maíz de un tipo conocido comúnmente como cacahuazintle, a la que se agrega, según la región, carne de pollo o de cerdo como ingrediente secundario", 0))//R.drawable.pozole))
-        models.add(Items(4,"Tacos","Es considerado como uno de los platillos más representativos de la comida mexicana\u200B\u200B." , 0))
-        val adapter= Adapter(models)
-        recycler.adapter = adapter
-
+        lstitems = ArrayList()
+        val idTienda:String = intent.getStringExtra("idTienda")
+        jsonArrayRequest(idTienda)
         btn_Carrito.setOnClickListener {
             var intent = Intent(this, CarritoActivity::class.java)
             startActivity(intent)
         }
+    }
+    fun jsonArrayRequest(idTienda:String) {
+        //if (Network.hayRed(this.contex)) {
+        //        DescargaURL(this.context).execute("http://www.google.com")
+        //        if (Network.hayRed(this.context)) {
+        // Instantiate the RequestQueue.
+        val queue = Volley.newRequestQueue(this.baseContext)
+        val url = "http://192.168.0.7:8080/Apiproyecto/post.php?productos=true&idtienda=$idTienda"
+        //Log.i(MainActivity.LOG_TAG, "Url is: $url")
+        // Request a JSONArray response from the provided URL.
+        val jsonArrayRequest = JsonArrayRequest(url,
+            Response.Listener { array ->
+                //Log.i(MainActivity.LOG_TAG, "Response is: $array")
+                //Log.i(MainActivity.LOG_TAG, "Hay : ${array.length()}")
+                val models = ArrayList<Items>()
+                //var array = response.getJSONArray(1)
+                for (i in 0 until array.length()){
+                    var obj = array.getJSONObject(i)
+                    models.add(Items(obj.getString("id"), obj.getString("nombre"), obj.getString("descripcion"), R.drawable.appicon))
+                    //lstitems.add(Items(0,"Chiles en nogada", "El chile en nogada es uno de los platillos típicos de la gastronomía del estado de Puebla", 0))
+                }
+                val adapter= Adapter(models)
+                recycler.adapter = adapter
+            },
+            Response.ErrorListener { error ->
+                error.printStackTrace()
+                Log.e(MainActivity.LOG_TAG, "Api no accesible!")
+            }
+        )
+        // Add the request to the RequestQueue.
+        queue.add(jsonArrayRequest)
+        //  } else Toast.makeText(this.context, "No hay Red", Toast.LENGTH_LONG).show()
+        //} else Toast.makeText(this.context, "No hay Red", Toast.LENGTH_LONG).show()
     }
 }

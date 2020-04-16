@@ -10,7 +10,13 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.FrameLayout
 import android.widget.ListView
+import android.widget.Toast
 import androidx.fragment.app.FragmentTransaction
+import com.android.volley.Response
+import com.android.volley.toolbox.JsonArrayRequest
+import com.android.volley.toolbox.Volley
+import com.example.plazapp.api.DescargaURL
+import com.example.plazapp.api.Network
 import com.example.plazapp.data.*
 
 class lsttiendas : Fragment() {
@@ -46,20 +52,52 @@ class lsttiendas : Fragment() {
     }
 
     private fun configurarListView(){
-        lstTiendas = ArrayList()
-        lstTiendas?.add(Tienda("Las quince letrss", "Venta de abarrote", "4578784512", "Colonia Laureles, torreslanda #27", R.drawable.appicon))
-        lstTiendas?.add(Tienda("Pollos hermanos", "Pollo estilo Sinaloa", "4578787988", "Colonia Laureles, torreslanda #46", R.drawable.appicon))
-        lstTiendas?.add(Tienda("Carniceria Diaz", "Venta de carne fresca", "4577878469", "Colonia Laureles, torreslanda #120", R.drawable.appicon))
-
-        lstNombres = obtenerNombres(lstTiendas!!)
-        val adaptador = ArrayAdapter(activity!!, android.R.layout.simple_list_item_activated_1, lstNombres!!)
-        lista = activity!!.findViewById(R.id.lst_tiendas)
-        lista?.adapter = adaptador
-        lista?.setOnItemClickListener { adapterView, view, i, l ->
-            mostrarDetalles(i)
-        }
+        jsonArrayRequest()
     }
 
+    fun jsonArrayRequest() {
+        //if (Network.hayRed(this.contex)) {
+        //        DescargaURL(this.context).execute("http://www.google.com")
+        //        if (Network.hayRed(this.context)) {
+                // Instantiate the RequestQueue.
+                val queue = Volley.newRequestQueue(this.context)
+                val url = "http://192.168.0.7:8080/Apiproyecto/post.php"//?productos=true&idtienda=B4B2A879-7EBF-11EA-B2E7-94E979ECB4F6"
+                // Request a JSONArray response from the provided URL.
+                val jsonArrayRequest = JsonArrayRequest(url,
+                    Response.Listener { array ->
+                        //Log.i(MainActivity.LOG_TAG, "Response is: $array")
+                        //Log.i(MainActivity.LOG_TAG, "Hay : ${array.length()}")
+                        //var array = response.getJSONArray(1)
+                        lstTiendas = ArrayList()
+                        for (i in 0 until array.length()){
+                            var obj = array.getJSONObject(i)
+                            //Log.i(MainActivity.LOG_TAG, "nombre de la tienda : ${obj.getString("nombre")}")
+                            lstTiendas?.add(Tienda(
+                                obj.getString("id"),
+                                obj.getString("nombre"),
+                                obj.getString("descripcion"),
+                                obj.getString("telefono"),
+                                obj.getString("ubicacion"),
+                                R.drawable.appicon))
+                        }
+                        lstNombres = obtenerNombres(lstTiendas!!)
+                        val adaptador = ArrayAdapter(activity!!, android.R.layout.simple_list_item_activated_1, lstNombres!!)
+                        lista = activity!!.findViewById(R.id.lst_tiendas)
+                        lista?.adapter = adaptador
+                        lista?.setOnItemClickListener { adapterView, view, i, l ->
+                            mostrarDetalles(i)
+                        }
+                    },
+                    Response.ErrorListener { error ->
+                        error.printStackTrace()
+                        Log.e(MainActivity.LOG_TAG, "Api no accesible!")
+                    }
+                )
+                // Add the request to the RequestQueue.
+                queue.add(jsonArrayRequest)
+          //  } else Toast.makeText(this.context, "No hay Red", Toast.LENGTH_LONG).show()
+        //} else Toast.makeText(this.context, "No hay Red", Toast.LENGTH_LONG).show()
+    }
     fun mostrarDetalles(index:Int) {
         posicionActual = index
         if (doblePanel) {
@@ -77,7 +115,6 @@ class lsttiendas : Fragment() {
             intent.putExtra("INDEX", index)
             startActivity(intent)
         }
-
     }
     fun obtenerNombres(list:ArrayList<Tienda>):ArrayList<String>{
         val nombres = ArrayList<String>()
