@@ -34,19 +34,38 @@ class MainActivity : AppCompatActivity(), CompletadoListener {
         var dbUsuario = Usuarios()
         //jsonArrayRequest()
         if( action != null){
-            Log.i(LOG_TAG, action)
-            val lstUsuarios = DataBase.getInstance(this@MainActivity)?.usuariosDAO()?.selectAll()
-            lstUsuarios?.get(lstUsuarios?.size - 1)?.let {
-                dbUsuario =it
-            }
-            if(action == "salir") {
-                DataBase.getInstance(this@MainActivity)?.usuariosDAO()?.delete(dbUsuario)
-            }
-            else{
-                populateUI(dbUsuario)
-            }
+            doAsync {
+                Log.i(LOG_TAG, action)
+                val lstUsuarios =
+                    DataBase.getInstance(this@MainActivity)?.usuariosDAO()?.selectAll()
+                Log.i(LOG_TAG, "se encontraron: $lstUsuarios.count() registros")
+                lstUsuarios?.get(lstUsuarios?.size - 1)?.let {
+                    dbUsuario = it
+                }
+                if (action == "salir") {
+                    DataBase.getInstance(this@MainActivity)?.usuariosDAO()?.delete(dbUsuario)
+                } else {
+                    runOnUiThread{ populateUI(dbUsuario) }
+                }
+            }.execute()
         }else {
-            Log.i(LOG_TAG, "no hay valor")
+            doAsync {
+                Log.i(LOG_TAG, "no hay valor")
+                val lstUsuarios =
+                    DataBase.getInstance(this@MainActivity)?.usuariosDAO()?.selectAll()
+                Log.i(LOG_TAG, "se encontraron: ${lstUsuarios.orEmpty().size} registros")
+                for(item in lstUsuarios.orEmpty()){
+                    //DataBase.getInstance(this@MainActivity)?.usuariosDAO()?.delete(item)
+                    Log.i(LOG_TAG, "se encontro: ${item.nombre}")
+                    runOnUiThread {
+                        populateUI(item)
+                        usuario = Usuario(item.nombre, item.direccion, item.telefono)
+                        val intent = Intent(this, Fragmento::class.java)
+                        startActivity(intent)
+                    }
+
+                }
+            }.execute()
         }
 
         btn_acceso.setOnClickListener{
