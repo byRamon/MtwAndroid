@@ -48,7 +48,7 @@ class ItemsActivity : AppCompatActivity() {
                 //var array = response.getJSONArray(1)
                 for (i in 0 until array.length()){
                     var obj = array.getJSONObject(i)
-                    models.add(Items(obj.getString("id"), obj.getString("nombre"), obj.getString("descripcion"), R.drawable.appicon))
+                    models.add(Items(obj.getString("id"), obj.getString("nombre"), obj.getString("descripcion"), obj.getString("thumbnail")))
                     //lstitems.add(Items(0,"Chiles en nogada", "El chile en nogada es uno de los platillos típicos de la gastronomía del estado de Puebla", 0))
                 }
                 val adapter= Adapter(models)

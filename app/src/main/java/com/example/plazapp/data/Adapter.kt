@@ -18,7 +18,7 @@ class Adapter (var list:ArrayList<Items>): RecyclerView.Adapter<Adapter.ViewHold
         fun bindItem(data:Items){
             itemView.tvtexto.text = data.nombre
             itemView.tvDescripcion.text = data.descripcion
-            //Glide.with(itemView.context).load(data.thumbnail).into(itemView.thumbnail)
+            Glide.with(itemView.context).load(data.thumbnail).into(itemView.thumbnail)
             itemView.imagen.setOnClickListener{
                 //Toast.makeText(it.context, "add ${data.nombre}", Toast.LENGTH_LONG).show()
             }

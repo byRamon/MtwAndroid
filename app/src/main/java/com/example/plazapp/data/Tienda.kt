@@ -1,12 +1,12 @@
 package com.example.plazapp.data
 
-class Tienda (parId:String, parNombre:String, parDescripcion:String, parTelefono:String, parUbicacion:String, parImagen:Int){
-    var id:String
+class Tienda (parId:String, parNombre:String, parDescripcion:String, parTelefono:String, parUbicacion:String, parImagen:String){
+    var id:String= ""
     var nombre:String = ""
     var descripcion:String = ""
     var telefono:String = ""
     var ubicacion:String = ""
-    var imagen:Int = 0
+    var imagen:String = ""
     init {
         this.id = parId
         this.nombre = parNombre

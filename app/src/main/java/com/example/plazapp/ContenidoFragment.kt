@@ -13,6 +13,7 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.example.plazapp.data.Adapter
 import com.example.plazapp.data.Items
 import kotlinx.android.synthetic.main.activity_items.*
@@ -50,7 +51,9 @@ class ContenidoFragment : Fragment() {
         var ubicacion = vista!!.findViewById<TextView>(R.id.tv_ubicacion)
         var btn = vista!!.findViewById<Button>(R.id.btn_entrartienda)
         var btnLlamar = vista!!.findViewById<Button>(R.id.btnLlamar)
-        icono.setImageResource(lsttiendas.lstTiendas?.get(obtenerIndex())?.imagen!!)
+        //icono.setImageResource(lsttiendas.lstTiendas?.get(obtenerIndex())?.imagen!!)
+
+        Glide.with(this.context!!).load(lsttiendas.lstTiendas?.get(obtenerIndex())?.imagen!!).into(icono)
         titulo.text = lsttiendas.lstTiendas?.get(obtenerIndex())?.nombre
         descripcion.text = lsttiendas.lstTiendas?.get(obtenerIndex())?.descripcion
         telefono.text = lsttiendas.lstTiendas?.get(obtenerIndex())?.telefono

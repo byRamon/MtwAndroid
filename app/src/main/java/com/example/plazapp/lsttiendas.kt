@@ -82,7 +82,7 @@ class lsttiendas : Fragment() {
                                 obj.getString("descripcion"),
                                 obj.getString("telefono"),
                                 obj.getString("ubicacion"),
-                                R.drawable.appicon))
+                                obj.getString("imagen")))
                         }
                         lstNombres = obtenerNombres(lstTiendas!!)
                         val adaptador = ArrayAdapter(activity!!, android.R.layout.simple_list_item_activated_1, lstNombres!!)
