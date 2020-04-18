@@ -33,11 +33,13 @@ class DetallesActivity : AppCompatActivity() {
 //Juan Menu
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu1,menu)
+    menuInflater.inflate(R.menu.menu1,menu)
         menuInflater.inflate(R.menu.menu,menu)
         return true
     }
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId){
+            R.id.mnudetalle-> detalle()
             R.id.mnuAcerca-> acercaDe()
             R.id.btnSalir-> Item2()
             R.id.mnudatos->  datos()
@@ -53,11 +55,17 @@ class DetallesActivity : AppCompatActivity() {
 
     fun datos():Boolean{
         val intent = Intent( this, MainActivity::class.java)
+        val intent = Intent( this, Fragmento::class.java)
         startActivity(intent)
         return true
     }
 
     fun Item2():Boolean{
+        val intent = Intent( this, MainActivity::class.java)
+        startActivity(intent)
+        return true
+    }
+    fun detalle():Boolean{
         val intent = Intent( this, MainActivity::class.java)
         startActivity(intent)
         return true

@@ -3,10 +3,10 @@ package com.example.plazapp.data
 import android.content.Context
 import androidx.room.*
 
-@Database(entities = [Pedidos::class], version = 1, exportSchema = false)
+@Database(entities = [Usuarios::class], version = 2, exportSchema = false)
 @TypeConverters(DateConverter::class)
 abstract class DataBase : RoomDatabase() {
-    abstract fun pedidosDAO() : PedidosDAO
+    abstract fun usuariosDAO() : UsuariosDAO
     companion object{
         private const val DATABASE_NAME = "database.db"
         @Volatile
@@ -18,17 +18,23 @@ abstract class DataBase : RoomDatabase() {
                     context.applicationContext,
                     DataBase::class.java,
                     DATABASE_NAME
-                ).build()
+                ).fallbackToDestructiveMigration().build()
             }
             return INSTANCE
         }
     }
 }
 @Dao
-interface PedidosDAO {
-    @Insert
-    fun insert(pedido: Pedidos)
+interface UsuariosDAO {
+    @Query( "select * from Usuarios")
+    fun selectAll(): List<Usuarios>
 
-    @Query( "select * from Pedidos")
-    fun selectAll(): List<Pedidos>
+    @Insert
+    fun insert(usuario: Usuarios)
+
+    @Update
+    fun update(usuario: Usuarios)
+
+    @Delete
+    fun delete(usuario: Usuarios)
 }

@@ -2,6 +2,7 @@ package com.example.plazapp
 
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -12,6 +13,7 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.example.plazapp.data.Adapter
 import com.example.plazapp.data.Items
 import kotlinx.android.synthetic.main.activity_items.*
@@ -48,7 +50,10 @@ class ContenidoFragment : Fragment() {
         var telefono = vista!!.findViewById<TextView>(R.id.tv_telefono)
         var ubicacion = vista!!.findViewById<TextView>(R.id.tv_ubicacion)
         var btn = vista!!.findViewById<Button>(R.id.btn_entrartienda)
-        icono.setImageResource(lsttiendas.lstTiendas?.get(obtenerIndex())?.imagen!!)
+        var btnLlamar = vista!!.findViewById<Button>(R.id.btnLlamar)
+        //icono.setImageResource(lsttiendas.lstTiendas?.get(obtenerIndex())?.imagen!!)
+
+        Glide.with(this.context!!).load(lsttiendas.lstTiendas?.get(obtenerIndex())?.imagen!!).into(icono)
         titulo.text = lsttiendas.lstTiendas?.get(obtenerIndex())?.nombre
         descripcion.text = lsttiendas.lstTiendas?.get(obtenerIndex())?.descripcion
         telefono.text = lsttiendas.lstTiendas?.get(obtenerIndex())?.telefono
@@ -56,6 +61,11 @@ class ContenidoFragment : Fragment() {
 
         btn.setOnClickListener{
             val intent = Intent(this.context, ItemsActivity::class.java)
+            intent.putExtra("idTienda", lsttiendas.lstTiendas?.get(obtenerIndex())?.id)
+            startActivity(intent)
+        }
+        btnLlamar.setOnClickListener{
+            val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:" +lsttiendas.lstTiendas?.get(obtenerIndex())?.telefono))
             startActivity(intent)
         }
     }

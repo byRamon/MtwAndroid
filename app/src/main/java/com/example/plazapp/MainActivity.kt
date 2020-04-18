@@ -17,10 +17,12 @@ import kotlinx.android.synthetic.main.activity_main.*
 import org.json.JSONArray
 import org.json.JSONObject
 import java.lang.Exception
-import android.widget.TextView;
+import java.time.LocalDateTime
+import java.time.ZoneId
+import java.util.*
+
 
 class MainActivity : AppCompatActivity(), CompletadoListener {
-
     companion object {
         val LOG_TAG = "@DEV"
         var usuario:Usuario? = null
@@ -28,41 +30,68 @@ class MainActivity : AppCompatActivity(), CompletadoListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        val action:String? = intent.getStringExtra("action")
+        var dbUsuario = Usuarios()
+        //jsonArrayRequest()
+        if( action != null){
+            doAsync {
+                Log.i(LOG_TAG, action)
+                val lstUsuarios =
+                    DataBase.getInstance(this@MainActivity)?.usuariosDAO()?.selectAll()
+                Log.i(LOG_TAG, "se encontraron: $lstUsuarios.count() registros")
+                lstUsuarios?.get(lstUsuarios?.size - 1)?.let {
+                    dbUsuario = it
+                }
+                if (action == "salir") {
+                    DataBase.getInstance(this@MainActivity)?.usuariosDAO()?.delete(dbUsuario)
+                } else {
+                    runOnUiThread{ populateUI(dbUsuario) }
+                }
+            }.execute()
+        }else {
+            doAsync {
+                Log.i(LOG_TAG, "no hay valor")
+                val lstUsuarios =
+                    DataBase.getInstance(this@MainActivity)?.usuariosDAO()?.selectAll()
+                Log.i(LOG_TAG, "se encontraron: ${lstUsuarios.orEmpty().size} registros")
+                for(item in lstUsuarios.orEmpty()){
+                    //DataBase.getInstance(this@MainActivity)?.usuariosDAO()?.delete(item)
+                    Log.i(LOG_TAG, "se encontro: ${item.nombre}")
+                    runOnUiThread {
+                        populateUI(item)
+                        usuario = Usuario(item.nombre, item.direccion, item.telefono)
+                        val intent = Intent(this, Fragmento::class.java)
+                        startActivity(intent)
+                    }
+
+                }
+            }.execute()
+        }
+
         btn_acceso.setOnClickListener{
-            usuario = Usuario(
-            ev_nombre.text.toString(), ev_direccion.text.toString(), ev_telefono.text.toString())
+            usuario = Usuario(ev_nombre.text.toString(), ev_direccion.text.toString(), ev_telefono.text.toString())
+            doAsync{
+                val localDateTime = LocalDateTime.now()
+                val date = Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant())
+                dbUsuario.nombre = ev_nombre.text.toString()
+                dbUsuario.telefono = ev_telefono.text.toString()
+                dbUsuario.direccion = ev_direccion.text.toString()
+                dbUsuario.actualizado = date
+                if(dbUsuario.id < 1){
+                    dbUsuario.creado = date
+                    DataBase.getInstance(this@MainActivity)?.usuariosDAO()?.insert(dbUsuario)
+                }
+                else{
+                    DataBase.getInstance(this@MainActivity)?.usuariosDAO()?.update(dbUsuario)
+                }
+                val lstUsuarios = DataBase.getInstance(this@MainActivity)?.usuariosDAO()?.selectAll()
+                runOnUiThread{
+                    lstUsuarios?.get(lstUsuarios?.size - 1)?.let { populateUI(it) }
+                }
+            }.execute()
             val intent = Intent(this, Fragmento::class.java)
             startActivity(intent)
         }
-
-
-
-        /*
-
-        doAsync{
-            var pedido = Pedidos()
-            pedido.objeto = "pera"
-            pedido.cantidad = 100.0
-            pedido.unidades = "gr"
-            DataBase.getInstance(this@MainActivity)?.pedidosDAO()?.insert(pedido)
-            val lstPedidos = DataBase.getInstance(this@MainActivity)?.pedidosDAO()?.selectAll()
-            runOnUiThread{
-                lstPedidos?.get(lstPedidos?.size - 1)?.let { populateUI(it) }
-            }
-        }.execute()
-
-
-            if (Network.hayRed(this)) {
-                DescargaURL(this).execute("http://www.google.com")
-                if (Network.hayRed(this)) {
-                    jsonObjectRequest()
-                    jsonArrayRequest()
-                } else
-                    Toast.makeText(this, "No hay Red", Toast.LENGTH_LONG).show()
-            } else
-                Toast.makeText(this, "No hay Red", Toast.LENGTH_LONG).show()
-
-         */
     }
     private fun solicitudHttpVolley(url:String){
         val queue = Volley.newRequestQueue(this)
@@ -87,9 +116,11 @@ class MainActivity : AppCompatActivity(), CompletadoListener {
     override fun descargaCompleta(resultado: String) {
         Log.i("@DEV", resultado)
     }
-    fun populateUI(pedido: Pedidos)
+    fun populateUI(usuario: Usuarios)
     {
-        //tvTexto.text = pedido.id.toString() + " "  + pedido.objeto + " " + pedido.unidades
+        ev_nombre.setText(usuario.nombre)
+        ev_telefono.setText(usuario.telefono)
+        ev_direccion.setText(usuario.direccion)
     }
     fun jsonObjectRequest() {
         Log.i(LOG_TAG, "jsonObjectRequest")
@@ -141,30 +172,57 @@ class MainActivity : AppCompatActivity(), CompletadoListener {
         queue.add(jsonObjectRequest)
     }
 
-    fun jsonArrayRequest() {
-        Log.i(LOG_TAG, "jsonArrayRequest")
+    fun stringRequest() {
+        Log.i(LOG_TAG, "stringRequest")
+
         // Instantiate the RequestQueue.
         val queue = Volley.newRequestQueue(this)
-        val url = "http://192.168.0.7:8080/ApiCoronavirus/post.php"//?paises=true"
-        // Request a JSONArray response from the provided URL.
-        val jsonArrayRequest = JsonArrayRequest(url,
-            Response.Listener { array ->
-                Log.i(LOG_TAG, "Response is: $array")
-                Log.i(LOG_TAG, "Hay : ${array.length()}")
-                //var array = response.getJSONArray(1)
-                for (i in 0 until array.length()){
-                    var pais = array.getJSONObject(i)
-                    Log.i(LOG_TAG, "Pais is : ${pais.getString("pais")}")
-                }
+
+        val url = "https://kikopalomares.com"
+
+        // Request a string response from the provided URL.
+        val stringRequest = StringRequest(url,
+            Response.Listener<String> { response ->
+                // Display the first 100 characters of the response string.
+                Log.i(LOG_TAG, "Response is: ${response.substring(0, 100)}")
             },
             Response.ErrorListener { error ->
                 error.printStackTrace()
                 Log.e(LOG_TAG, "That didn't work!")
-            }
-        )
+            })
 
         // Add the request to the RequestQueue.
-        queue.add(jsonArrayRequest)
+        queue.add(stringRequest)
+    }
+    fun jsonArrayRequest() {
+        if (Network.hayRed(this)) {
+            DescargaURL(this).execute("http://www.google.com")
+            if (Network.hayRed(this)) {
+                // Instantiate the RequestQueue.
+                val queue = Volley.newRequestQueue(this)
+                val url = "http://192.168.0.7:8080/Apiproyecto/post.php"//?productos=true&idtienda=B4B2A879-7EBF-11EA-B2E7-94E979ECB4F6"
+                // Request a JSONArray response from the provided URL.
+                val jsonArrayRequest = JsonArrayRequest(url,
+                    Response.Listener { array ->
+                        Log.i(LOG_TAG, "Response is: $array")
+                        Log.i(LOG_TAG, "Hay : ${array.length()}")
+                        //var array = response.getJSONArray(1)
+                        for (i in 0 until array.length()){
+                            var obj = array.getJSONObject(i)
+                            Log.i(LOG_TAG, "nombre de la tienda : ${obj.getString("nombre")}")
+                        }
+                    },
+                    Response.ErrorListener { error ->
+                        error.printStackTrace()
+                        Log.e(LOG_TAG, "Api no accesible!")
+                    }
+                )
+                // Add the request to the RequestQueue.
+                queue.add(jsonArrayRequest)
+            } else
+                Toast.makeText(this, "No hay Red", Toast.LENGTH_LONG).show()
+        } else
+            Toast.makeText(this, "No hay Red", Toast.LENGTH_LONG).show()
     }
 
     fun jsonArrayRequestPost() {
@@ -194,6 +252,4 @@ class MainActivity : AppCompatActivity(), CompletadoListener {
         // Add the request to the RequestQueue.
         queue.add(jsonArrayRequest)
     }
-
-
 }

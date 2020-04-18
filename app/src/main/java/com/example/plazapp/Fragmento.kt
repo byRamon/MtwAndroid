@@ -25,6 +25,7 @@ class Fragmento : AppCompatActivity() {
     }
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId){
+            R.id.mnudetalle-> detalle()
             R.id.mnuAcerca-> acercaDe()
             R.id.btnSalir-> Item2()
             else -> super.onOptionsItemSelected(item)
@@ -44,6 +45,11 @@ class Fragmento : AppCompatActivity() {
     }
 
     fun Item2():Boolean{
+        val intent = Intent( this, MainActivity::class.java)
+        startActivity(intent)
+        return true
+    }
+    fun detalle():Boolean{
         val intent = Intent( this, MainActivity::class.java)
         startActivity(intent)
         return true

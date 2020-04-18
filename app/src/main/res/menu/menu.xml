@@ -6,6 +6,9 @@
         android:id="@+id/mnudatos"
         android:icon="@drawable/ic_launcher_background"
         android:title="Mis datos">
+        android:id="@+id/mnudetalle"
+        android:icon="@drawable/ic_launcher_background"
+        android:title="Mis Datos">
 
     </item>
     <item
