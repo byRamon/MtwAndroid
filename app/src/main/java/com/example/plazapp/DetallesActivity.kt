@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.graphics.Typeface;
+import kotlinx.android.synthetic.main.fragment_lsttiendas.*
 
 
 class DetallesActivity : AppCompatActivity() {
@@ -29,34 +30,39 @@ class DetallesActivity : AppCompatActivity() {
         }
     }
 
-//Juan Menu
+//Juan Menu Detalle de la tienda
+
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-    menuInflater.inflate(R.menu.menu1,menu)
+       menuInflater.inflate(R.menu.menu1,menu)
         menuInflater.inflate(R.menu.menu,menu)
         return true
     }
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId){
-            R.id.mnudetalle-> detalle()
-            R.id.mnuAcerca-> acercaDe()
-            R.id.btnSalir-> Item2()
+            R.id.mnudatos-> datos()
+            R.id.btnSalir-> Salir()
+            R.id.mnuListaPlaza-> ListaPlaza()
             else -> super.onOptionsItemSelected(item)
         }
 
     }
-    fun acercaDe():Boolean{
+    fun ListaPlaza():Boolean{
         val intent = Intent( this, Fragmento::class.java)
         startActivity(intent)
         return true
     }
-    fun Item2():Boolean{
+
+    fun Salir():Boolean{
         val intent = Intent( this, MainActivity::class.java)
+        intent.putExtra("action","salir")
         startActivity(intent)
         return true
     }
-    fun detalle():Boolean{
+    fun datos():Boolean{
         val intent = Intent( this, MainActivity::class.java)
+        intent.putExtra("action","modificar")
         startActivity(intent)
         return true
     }
+
 }
