@@ -8,8 +8,6 @@ import android.view.Menu
 import android.view.MenuItem
 import android.util.JsonReader
 import android.util.Log
-import android.view.Menu
-import android.view.MenuItem
 import android.widget.ArrayAdapter
 import android.widget.ListView
 import com.android.volley.Request
@@ -51,8 +49,8 @@ class CarritoActivity : AppCompatActivity() {
 
     }
 
+    //Juan Menu  Lista del Carrito de compras
 
-    //Juan Menu
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu1,menu)
         menuInflater.inflate(R.menu.menu,menu)
@@ -61,26 +59,28 @@ class CarritoActivity : AppCompatActivity() {
     }
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId){
-            R.id.mnuAcerca-> acercaDe()
-            R.id.btnSalir-> Item2()
+            R.id.mnudatos-> datos()
+            R.id.btnSalir-> Salir()
+            R.id.mnuListaPlaza-> ListaPlaza()
             else -> super.onOptionsItemSelected(item)
         }
 
     }
-    fun acercaDe():Boolean{
+    fun ListaPlaza():Boolean{
         val intent = Intent( this, Fragmento::class.java)
         startActivity(intent)
         return true
     }
 
-    fun datos():Boolean{
+    fun Salir():Boolean{
         val intent = Intent( this, MainActivity::class.java)
+        intent.putExtra("action","salir")
         startActivity(intent)
         return true
     }
-
-    fun Item2():Boolean{
+    fun datos():Boolean{
         val intent = Intent( this, MainActivity::class.java)
+        intent.putExtra("action","modificar")
         startActivity(intent)
         return true
     }
@@ -92,42 +92,13 @@ class CarritoActivity : AppCompatActivity() {
         }
         return  nombres
     }
-    //Juan Menu
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.menu1,menu)
-        menuInflater.inflate(R.menu.menu,menu)
-        return true
-    }
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId){
-            R.id.mnudetalle-> detalle()
-            R.id.mnuAcerca-> acercaDe()
-            R.id.btnSalir-> Item2()
-            else -> super.onOptionsItemSelected(item)
-        }
 
-    }
-    fun acercaDe():Boolean{
-        val intent = Intent( this, Fragmento::class.java)
-        startActivity(intent)
-        return true
-    }
-    fun Item2():Boolean{
-        val intent = Intent( this, MainActivity::class.java)
-        startActivity(intent)
-        return true
-    }
-    fun detalle():Boolean{
-        val intent = Intent( this, MainActivity::class.java)
-        startActivity(intent)
-        return true
-    }
 
     fun jsonArrayRequestPost(pedido:String) {
         Log.i(LOG_TAG, "jsonArrayRequestPost")
         // Instantiate the RequestQueue.
         val queue = Volley.newRequestQueue(this)
-        val url = "http://192.168.0.7:8080/Apiproyecto/post.php"
+        val url = "http://192.168.64.2/ApiProyecto/post.php"
         //val gsonPretty = GsonBuilder().setPrettyPrinting().create()
         //val jsonTutsListPretty: String = gsonPretty.toJson(ItemsActivity.lstitems)
         //Log.i(LOG_TAG, jsonTutsListPretty)

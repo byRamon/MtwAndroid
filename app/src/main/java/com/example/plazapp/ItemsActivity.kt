@@ -37,7 +37,7 @@ class ItemsActivity : AppCompatActivity() {
         //        if (Network.hayRed(this.context)) {
         // Instantiate the RequestQueue.
         val queue = Volley.newRequestQueue(this.baseContext)
-        val url = "http://192.168.0.7:8080/Apiproyecto/post.php?productos=true&idtienda=$idTienda"
+        val url = "http://192.168.64.2/ApiProyecto/post.php?productos=true&idtienda=$idTienda"
         //Log.i(MainActivity.LOG_TAG, "Url is: $url")
         // Request a JSONArray response from the provided URL.
         val jsonArrayRequest = JsonArrayRequest(url,
@@ -65,40 +65,39 @@ class ItemsActivity : AppCompatActivity() {
         //} else Toast.makeText(this.context, "No hay Red", Toast.LENGTH_LONG).show()
     }
 
-//Juan Menu
+//Juan Menu  Lista de Productos
+
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.menu1,menu)
+       menuInflater.inflate(R.menu.menu1,menu)
         menuInflater.inflate(R.menu.menu,menu)
         return true
     }
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId){
-            R.id.mnudetalle-> detalle()
-            R.id.mnuAcerca-> acercaDe()
-            R.id.btnSalir-> Item2()
-            R.id.mnudatos->  datos()
+            R.id.mnudatos-> datos()
+            R.id.btnSalir-> Salir()
+            R.id.mnuListaPlaza-> ListaPlaza()
             else -> super.onOptionsItemSelected(item)
         }
 
     }
-    fun datos():Boolean{
-        val intent = Intent( this, MainActivity::class.java)
-        startActivity(intent)
-        return true
-    }
-    fun acercaDe():Boolean{
+    fun ListaPlaza():Boolean{
         val intent = Intent( this, Fragmento::class.java)
         startActivity(intent)
         return true
     }
-    fun Item2():Boolean{
+
+    fun Salir():Boolean{
         val intent = Intent( this, MainActivity::class.java)
+        intent.putExtra("action","salir")
         startActivity(intent)
         return true
     }
-    fun detalle():Boolean{
+    fun datos():Boolean{
         val intent = Intent( this, MainActivity::class.java)
+        intent.putExtra("action","modificar")
         startActivity(intent)
         return true
     }
+
 }

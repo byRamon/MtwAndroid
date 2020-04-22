@@ -65,7 +65,7 @@ class lsttiendas : Fragment() {
         //        if (Network.hayRed(this.context)) {
                 // Instantiate the RequestQueue.
                 val queue = Volley.newRequestQueue(this.context)
-                val url = "http://192.168.0.7:8080/Apiproyecto/post.php"//?productos=true&idtienda=B4B2A879-7EBF-11EA-B2E7-94E979ECB4F6"
+                val url = "http://192.168.64.2/ApiProyecto/post.php"//?productos=true&idtienda=B4B2A879-7EBF-11EA-B2E7-94E979ECB4F6"
                 // Request a JSONArray response from the provided URL.
                 val jsonArrayRequest = JsonArrayRequest(url,
                     Response.Listener { array ->
