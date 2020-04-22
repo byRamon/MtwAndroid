@@ -23,6 +23,7 @@
             android:layout_marginRight="20dp"
             android:gravity="center"
             android:orientation="vertical">
+
             <EditText
                 android:id="@+id/ev_nombre"
                 android:layout_width="match_parent"
@@ -31,17 +32,18 @@
                 android:layout_marginRight="20dp"
                 android:layout_marginBottom="15dp"
                 android:background="@drawable/input"
+                android:fontFamily="@fuentes/bray_notes.ttf"
                 android:hint="@string/ev_nombre"
                 android:inputType="text"
+                android:maxLength="15"
                 android:paddingStart="20dp"
                 android:paddingTop="10dp"
                 android:paddingEnd="10dp"
                 android:paddingBottom="10dp"
                 android:textColor="#FFF"
-                android:textColorHint="#CCC"
-                android:fontFamily="@fuentes/bray_notes.ttf"
 
-                />
+                android:textColorHint="#CCC" />
+
             <EditText
                 android:id="@+id/ev_telefono"
                 android:layout_width="match_parent"
@@ -52,12 +54,14 @@
                 android:background="@drawable/input"
                 android:hint="@string/ev_telefono"
                 android:inputType="number"
+                android:maxLength="10"
                 android:paddingStart="20dp"
                 android:paddingTop="10dp"
                 android:paddingEnd="10dp"
                 android:paddingBottom="10dp"
                 android:textColor="#FFF"
                 android:textColorHint="#CCC" />
+
             <EditText
                 android:id="@+id/ev_direccion"
                 android:layout_width="match_parent"
@@ -68,6 +72,7 @@
                 android:background="@drawable/input"
                 android:hint="@string/ev_direccion"
                 android:inputType="text"
+                android:maxLength="40"
                 android:paddingStart="20dp"
                 android:paddingTop="10dp"
                 android:paddingEnd="10dp"

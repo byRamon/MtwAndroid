@@ -32,6 +32,7 @@ class MainActivity : AppCompatActivity(), CompletadoListener {
         setContentView(R.layout.activity_main)
         val action:String? = intent.getStringExtra("action")
         var dbUsuario = Usuarios()
+
         //jsonArrayRequest()
         if( action != null){
             doAsync {
@@ -69,6 +70,7 @@ class MainActivity : AppCompatActivity(), CompletadoListener {
         }
 
         btn_acceso.setOnClickListener{
+            if (validar()){
             usuario = Usuario(ev_nombre.text.toString(), ev_direccion.text.toString(), ev_telefono.text.toString())
             doAsync{
                 val localDateTime = LocalDateTime.now()
@@ -77,6 +79,7 @@ class MainActivity : AppCompatActivity(), CompletadoListener {
                 dbUsuario.telefono = ev_telefono.text.toString()
                 dbUsuario.direccion = ev_direccion.text.toString()
                 dbUsuario.actualizado = date
+
                 if(dbUsuario.id < 1){
                     dbUsuario.creado = date
                     DataBase.getInstance(this@MainActivity)?.usuariosDAO()?.insert(dbUsuario)
@@ -91,6 +94,10 @@ class MainActivity : AppCompatActivity(), CompletadoListener {
             }.execute()
             val intent = Intent(this, Fragmento::class.java)
             startActivity(intent)
+            }else{
+                Toast.makeText(applicationContext,"Completar campos", Toast.LENGTH_SHORT).show()
+
+            }
         }
     }
     private fun solicitudHttpVolley(url:String){
@@ -144,6 +151,7 @@ class MainActivity : AppCompatActivity(), CompletadoListener {
         // Add the request to the RequestQueue.
         queue.add(jsonObjectRequest)
     }
+
 
     /**
      * Llamada POST que envia un JSONObject y devuelve un JSONobject
@@ -225,6 +233,21 @@ class MainActivity : AppCompatActivity(), CompletadoListener {
             Toast.makeText(this, "No hay Red", Toast.LENGTH_LONG).show()
     }
 
+    ///Juan Validacion de campos
+
+
+    fun validar():Boolean{
+        var valor:Boolean = true
+        if(ev_nombre.text.toString().trim().length == 0 ||
+            ev_telefono.text.toString().trim().length == 0 ||
+            ev_direccion.text.toString().trim().length == 0
+                ){
+            valor = false
+        }
+        return valor
+
+    }
+
     fun jsonArrayRequestPost() {
         Log.i(LOG_TAG, "jsonArrayRequestPost")
 
@@ -252,4 +275,8 @@ class MainActivity : AppCompatActivity(), CompletadoListener {
         // Add the request to the RequestQueue.
         queue.add(jsonArrayRequest)
     }
+
+
+
+
 }
