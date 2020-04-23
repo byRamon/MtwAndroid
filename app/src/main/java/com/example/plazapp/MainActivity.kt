@@ -1,10 +1,20 @@
 package com.example.plazapp
 
+import android.Manifest
+import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.location.Location
+import android.location.LocationManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Looper
+import android.provider.Settings
 import android.util.Log
+import android.widget.TextView
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonArrayRequest
@@ -13,6 +23,7 @@ import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.example.plazapp.api.*
 import com.example.plazapp.data.*
+import com.google.android.gms.location.*
 import kotlinx.android.synthetic.main.activity_main.*
 import org.json.JSONArray
 import org.json.JSONObject
@@ -23,6 +34,12 @@ import java.util.*
 
 
 class MainActivity : AppCompatActivity(), CompletadoListener {
+
+    //variables de localizacion Juan
+    val PERMISSION_ID = 10
+    lateinit var mFusedLocationClient: FusedLocationProviderClient
+
+
     companion object {
         val LOG_TAG = "@DEV"
         var usuario:Usuario? = null
@@ -30,6 +47,12 @@ class MainActivity : AppCompatActivity(), CompletadoListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        ////////Localizacion///////////////
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+        getLastLocation()
+
+
         val action:String? = intent.getStringExtra("action")
         var dbUsuario = Usuarios()
 
@@ -179,6 +202,109 @@ class MainActivity : AppCompatActivity(), CompletadoListener {
         // Add the request to the RequestQueue.
         queue.add(jsonObjectRequest)
     }
+
+    //////////////////Localizacion///////////////////////
+
+    @SuppressLint("MissingPermission")
+    private fun getLastLocation() {
+        if (checkPermissions()) {
+            if (isLocationEnabled()) {
+
+                mFusedLocationClient.lastLocation.addOnCompleteListener(this) { task ->
+                    var location: Location? = task.result
+                    if (location == null) {
+                        requestNewLocationData()
+                    } else {
+                        findViewById<TextView>(R.id.latTextView).text = location.latitude.toString()
+                        findViewById<TextView>(R.id.lonTextView).text = location.longitude.toString()
+                    }
+                }
+            } else {
+                Toast.makeText(this, "Turn on location", Toast.LENGTH_LONG).show()
+                val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+                startActivity(intent)
+            }
+        } else {
+            requestPermissions()
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun requestNewLocationData() {
+        var mLocationRequest = LocationRequest()
+        mLocationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+        mLocationRequest.interval = 0
+        mLocationRequest.fastestInterval = 0
+        mLocationRequest.numUpdates = 1
+
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+        mFusedLocationClient!!.requestLocationUpdates(
+            mLocationRequest, mLocationCallback,
+            Looper.myLooper()
+        )
+    }
+///////////////////Ahora usaremos la API del proveedor de ubicación fusionada para obtener la posición actual de los usuarios.
+
+    private val mLocationCallback = object : LocationCallback() {
+        override fun onLocationResult(locationResult: LocationResult) {
+            var mLastLocation: Location = locationResult.lastLocation
+            findViewById<TextView>(R.id.latTextView).text = mLastLocation.latitude.toString()
+            findViewById<TextView>(R.id.lonTextView).text = mLastLocation.longitude.toString()
+        }
+    }
+
+
+/////////////////////Esto verificará si el usuario ha activado la ubicación desde la configuración./////////////
+
+    private fun isLocationEnabled(): Boolean {
+        var locationManager: LocationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(
+            LocationManager.NETWORK_PROVIDER
+        )
+    }
+
+
+//////////Este método nos dirá si el usuario nos otorga o no acceso ACCESS_COARSE_LOCATIONy ACCESS_FINE_LOCATION.
+
+    private fun checkPermissions(): Boolean {
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED &&
+            ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            return true
+        }
+        return false
+    }
+
+
+/////////Este método solicitará nuestros permisos necesarios al usuario si aún no están otorgados.////////////
+
+    private fun requestPermissions() {
+        ActivityCompat.requestPermissions(
+            this,
+            arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION),
+            PERMISSION_ID
+        )
+    }
+
+///////////////Se llama a este método cuando un usuario permite o deniega nuestros permisos solicitados.
+// Por lo tanto, nos ayudará a avanzar si se otorgan los permisos.
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        if (requestCode == PERMISSION_ID) {
+            if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                getLastLocation()
+            }
+        }
+    }
+
+//////////Termino de la Localizacion/////////////////
+
 
     fun stringRequest() {
         Log.i(LOG_TAG, "stringRequest")

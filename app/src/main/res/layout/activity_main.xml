@@ -5,17 +5,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
         android:background="#D8000000"
-        android:gravity="center">
+        android:gravity="center"
+        android:orientation="vertical">
+
         <ImageView
             android:layout_width="200dp"
             android:layout_height="100dp"
-            android:src="@drawable/appicon"
-            android:layout_marginBottom="50dp"/>
+            android:layout_marginBottom="50dp"
+            android:src="@drawable/appicon" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -79,6 +82,7 @@
                 android:paddingBottom="10dp"
                 android:textColor="#FFF"
                 android:textColorHint="#CCC" />
+
             <Button
                 android:id="@+id/btn_acceso"
                 android:layout_width="match_parent"
@@ -92,15 +96,46 @@
                 android:textColor="#FFF"
                 android:textSize="16sp" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:gravity="center"
-                android:orientation="horizontal">
 
-            </LinearLayout>
         </LinearLayout>
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+        </LinearLayout>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Latitud y Longitud"
+            android:textColor="@android:color/white" />
+
+        <TextView
+            android:id="@+id/latTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Latitude: "
+            android:textColor="@android:color/white" />
+
+        <TextView
+            android:id="@+id/lonTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Longitude: "
+            android:textColor="@android:color/white" />
+
+
     </LinearLayout>
+
+
+
+
 </LinearLayout>
