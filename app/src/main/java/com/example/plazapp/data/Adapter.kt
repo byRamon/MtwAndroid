@@ -21,10 +21,12 @@ class Adapter (var list:ArrayList<Items>): RecyclerView.Adapter<Adapter.ViewHold
             Glide.with(itemView.context).load(data.thumbnail).into(itemView.thumbnail)
             itemView.imagen.setOnClickListener{
                 //Toast.makeText(it.context, "add ${data.nombre}", Toast.LENGTH_LONG).show()
-            }
-            itemView.setOnClickListener{
                 Toast.makeText(it.context, "Se ha añadido ${data.nombre} al carrito", Toast.LENGTH_LONG).show()
                 ItemsActivity.lstitems?.add(data)
+            }
+            itemView.setOnClickListener{
+                //Toast.makeText(it.context, "Se ha añadido ${data.nombre} al carrito", Toast.LENGTH_LONG).show()
+                //ItemsActivity.lstitems?.add(data)
                 /*val intent = Intent( it.context, PlatilloActivity::class.java)
                 intent.putExtra(tag, data.id.toString())
                 it.context.startActivity(intent)*/

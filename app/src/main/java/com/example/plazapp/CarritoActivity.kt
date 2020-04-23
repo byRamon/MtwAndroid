@@ -8,6 +8,8 @@ import android.view.Menu
 import android.view.MenuItem
 import android.util.JsonReader
 import android.util.Log
+import android.view.View
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.ListView
 import com.android.volley.Request
@@ -16,6 +18,7 @@ import com.android.volley.toolbox.JsonArrayRequest
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.example.plazapp.MainActivity.Companion.LOG_TAG
+import com.example.plazapp.data.Adapter
 import com.example.plazapp.data.Items
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
@@ -23,7 +26,7 @@ import com.google.gson.JsonObject
 import kotlinx.android.synthetic.main.activity_carrito.*
 import org.json.JSONArray
 
-class CarritoActivity : AppCompatActivity() {
+class CarritoActivity : AppCompatActivity(), AdapterView.OnItemLongClickListener {
 
     var lstNombres:ArrayList<String>? = null
     var lista: ListView? = null
@@ -35,6 +38,8 @@ class CarritoActivity : AppCompatActivity() {
         lstNombres = obtenerNombres(ItemsActivity.lstitems)
         val adaptador = ArrayAdapter(this, android.R.layout.simple_list_item_activated_1, lstNombres!!)
         lst_carrito.adapter = adaptador
+
+        lst_carrito.onItemLongClickListener = this
 
         val gson = Gson()
         var jsonUsuario: String = gson.toJson(MainActivity.usuario)
@@ -95,10 +100,10 @@ class CarritoActivity : AppCompatActivity() {
 
 
     fun jsonArrayRequestPost(pedido:String) {
-        Log.i(LOG_TAG, "jsonArrayRequestPost")
+        //Log.i(LOG_TAG, "jsonArrayRequestPost $pedido")
         // Instantiate the RequestQueue.
         val queue = Volley.newRequestQueue(this)
-        val url = "http://192.168.64.2/ApiProyecto/post.php"
+        val url = "http://192.168.0.7:8080/ApiProyecto/post.php"
         //val gsonPretty = GsonBuilder().setPrettyPrinting().create()
         //val jsonTutsListPretty: String = gsonPretty.toJson(ItemsActivity.lstitems)
         //Log.i(LOG_TAG, jsonTutsListPretty)
@@ -141,5 +146,18 @@ class CarritoActivity : AppCompatActivity() {
         // Add the request to the RequestQueue.
         queue.add(postRequest)
         //queue.add(jsonArrayRequest)
+    }
+
+    override fun onItemLongClick(
+        parent: AdapterView<*>?,
+        view: View?,
+        position: Int,
+        id: Long
+    ): Boolean {
+        ItemsActivity.lstitems?.removeAt(position)
+        lstNombres = obtenerNombres(ItemsActivity.lstitems)
+        val adaptador = ArrayAdapter(this, android.R.layout.simple_list_item_activated_1, lstNombres!!)
+        lst_carrito.adapter = adaptador
+        return true
     }
 }

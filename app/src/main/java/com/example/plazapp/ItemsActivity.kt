@@ -37,7 +37,7 @@ class ItemsActivity : AppCompatActivity() {
         //        if (Network.hayRed(this.context)) {
         // Instantiate the RequestQueue.
         val queue = Volley.newRequestQueue(this.baseContext)
-        val url = "http://192.168.64.2/ApiProyecto/post.php?productos=true&idtienda=$idTienda"
+        val url = "http://192.168.0.7:8080/ApiProyecto/post.php?productos=true&idtienda=$idTienda"
         //Log.i(MainActivity.LOG_TAG, "Url is: $url")
         // Request a JSONArray response from the provided URL.
         val jsonArrayRequest = JsonArrayRequest(url,
