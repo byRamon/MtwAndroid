@@ -1,6 +1,5 @@
 package com.example.plazapp.data
 
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,13 +9,17 @@ import com.bumptech.glide.Glide
 import com.example.plazapp.ItemsActivity
 import com.example.plazapp.R
 import kotlinx.android.synthetic.main.content_item.view.*
+import java.text.DecimalFormat
+import java.text.NumberFormat
+
 
 class Adapter (var list:ArrayList<Items>): RecyclerView.Adapter<Adapter.ViewHolder>() {
 
     class ViewHolder(view: View): RecyclerView.ViewHolder(view){
 
         fun bindItem(data:Items){
-            itemView.tvtexto.text = data.nombre
+            val formatter: NumberFormat = DecimalFormat("#,###.##")
+            itemView.tvtexto.text = data.nombre + "\nprecio:$" + formatter.format(data.costo)
             itemView.tvDescripcion.text = data.descripcion
             Glide.with(itemView.context).load(data.thumbnail).into(itemView.thumbnail)
             itemView.imagen.setOnClickListener{

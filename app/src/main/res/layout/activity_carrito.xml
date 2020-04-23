@@ -6,11 +6,21 @@
     android:layout_height="match_parent"
     tools:context=".CarritoActivity">
 
+    <TextView
+        android:id="@+id/txttotal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="30dp"
+        android:textAlignment="viewEnd"
+        android:textSize="24sp"
+        app:layout_constraintTop_toTopOf="@+id/lst_carrito"
+        tools:layout_editor_absoluteX="30dp"></TextView>
     <ListView
         android:id="@+id/lst_carrito"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
+        android:layout_marginTop="30dp"
         app:layout_constraintBottom_toTopOf="@+id/btn_Carrito"
         style="@style/TextAppearance.AppCompat"
         />

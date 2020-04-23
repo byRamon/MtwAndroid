@@ -12,6 +12,7 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.ListView
+import android.widget.Toast
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonArrayRequest
@@ -25,6 +26,8 @@ import com.google.gson.GsonBuilder
 import com.google.gson.JsonObject
 import kotlinx.android.synthetic.main.activity_carrito.*
 import org.json.JSONArray
+import java.text.DecimalFormat
+import java.text.NumberFormat
 
 class CarritoActivity : AppCompatActivity(), AdapterView.OnItemLongClickListener {
 
@@ -35,11 +38,12 @@ class CarritoActivity : AppCompatActivity(), AdapterView.OnItemLongClickListener
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_carrito)
 
+        val formatter: NumberFormat = DecimalFormat("#,###.##")
         lstNombres = obtenerNombres(ItemsActivity.lstitems)
         val adaptador = ArrayAdapter(this, android.R.layout.simple_list_item_activated_1, lstNombres!!)
         lst_carrito.adapter = adaptador
-
         lst_carrito.onItemLongClickListener = this
+        txttotal.text = "Total:$" + formatter.format(ItemsActivity.lstitems?.sumByDouble { it.costo })
 
         val gson = Gson()
         var jsonUsuario: String = gson.toJson(MainActivity.usuario)
@@ -47,9 +51,14 @@ class CarritoActivity : AppCompatActivity(), AdapterView.OnItemLongClickListener
         val jsonPedido = jsonUsuario.replace("}", ",\"productos\":$jsonProductos}", true)
 
         btnPedido.setOnClickListener {
-            jsonArrayRequestPost(jsonPedido)
-            var intent = Intent(this, Fragmento::class.java)
-            startActivity(intent)
+            if(!ItemsActivity.lstitems?.isEmpty()!!) {
+                jsonArrayRequestPost(jsonPedido)
+                var intent = Intent(this, Fragmento::class.java)
+                startActivity(intent)
+            }
+            else {
+                Toast.makeText(it.context, "Debe agregar productos al carrito", Toast.LENGTH_LONG).show()
+            }
         }
 
     }
@@ -154,10 +163,12 @@ class CarritoActivity : AppCompatActivity(), AdapterView.OnItemLongClickListener
         position: Int,
         id: Long
     ): Boolean {
+        val formatter: NumberFormat = DecimalFormat("#,###.##")
         ItemsActivity.lstitems?.removeAt(position)
         lstNombres = obtenerNombres(ItemsActivity.lstitems)
         val adaptador = ArrayAdapter(this, android.R.layout.simple_list_item_activated_1, lstNombres!!)
         lst_carrito.adapter = adaptador
+        txttotal.text = "Total:$" + formatter.format(ItemsActivity.lstitems?.sumByDouble { it.costo })
         return true
     }
 }
